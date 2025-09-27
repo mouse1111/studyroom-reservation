@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.studyroom.studyroomreservation.repository.RoomMapper">
+    <insert id="insertRoom" parameterType="com.studyroom.studyroomreservation.domain.Room">
+        INSERT INTO ROOMS (name, location, capacity)
+        values (#{name}, #{location}, #{capacity})
+    </insert>
+
+    <select id="findAvailableRooms" resultType="com.studyroom.studyroomreservation.domain.Room">
+        SELECT R1.* FROM ROOMS R1
+            LEFT JOIN RESERVATIONS R2
+                on R1.ROOM_ID = R2.ROOM_ID
+                AND TO_DATE(#{date}, 'YYYY-MM-DD')
+                    AND TRUNC(R2.START_AT) &lt;= TO_DATE(#{date}, 'YYYY-MM-DD')
+                    AND TO_DATE(#{date}, 'YYYY-MM-DD') &lt; TRUNC(R2.END_AT)
+            WHERE R2.ROOM_ID IS NULL
+    </select>
+</mapper>
