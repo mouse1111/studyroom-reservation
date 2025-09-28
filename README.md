@@ -1,4 +1,4 @@
-## 🗺️ 싱크라이프 백엔드 신입 개발자 과제 - 스터디룸 예약
+## 🗺️ Studyroom resevation system
 
 ### 🛠️사용 기술
 - DB : OracleDB
