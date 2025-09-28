@@ -1,0 +1,27 @@
+services:
+  oracle-db:
+    image: gvenzl/oracle-xe:21-slim
+    container_name: oracle-db
+    environment:
+      ORACLE_PASSWORD: 1111   # SYSTEM 계정 비밀번호
+      ORACLE_DATABASE: XEPDB1
+    ports:
+      - "1521:1521"
+    volumes:
+      - ./src/main/resources/schema/reservation.sql:/docker-entrypoint-initdb.d/reservation.sql
+    networks:
+      - studyroom-net
+
+  springboot-app:
+    build: .
+    container_name: studyroom-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - oracle-db
+    networks:
+      - studyroom-net
+
+networks:
+  studyroom-net:
+    driver: bridge
